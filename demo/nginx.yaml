@@ -80,3 +80,25 @@ data:
      <p><em>Thank you for attending Kubernetes Workshop.</em></p>
      </body>
      </html>
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: haproxy-haproxy
+    haproxy.org/path-rewrite: "/"
+  name: nginx-ingress
+  namespace: ic-ws-demo
+spec:
+  rules:
+#  - host: app.local
+   - http:
+      paths:
+      - path: /demo
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
