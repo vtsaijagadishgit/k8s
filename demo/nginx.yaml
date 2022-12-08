@@ -74,7 +74,7 @@ data:
      </style>
      </head>
      <body>
-     <h1>Welcome to Ingenious Connect Season 9!</h1>
+     <h1>Output from namespace ic-ws-demo-v1!</h1>
      <p>If you see this page, your application and service are successfully installed and
      working. </p>
      <p><em>Thank you for attending Kubernetes Workshop.</em></p>
