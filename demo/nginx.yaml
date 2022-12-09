@@ -89,7 +89,7 @@ metadata:
     kubernetes.io/ingress.class: haproxy-haproxy
     haproxy.org/path-rewrite: "/"
   name: nginx-ingress
-  namespace: ic-ws-demo
+  #namespace: ic-ws-demo
 spec:
   rules:
 #  - host: app.local
