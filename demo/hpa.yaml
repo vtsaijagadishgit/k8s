@@ -2,7 +2,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-cpu-hpa
-  namespace: ic-ws-demo
+  #namespace: ic-ws-demo
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
