@@ -16,7 +16,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: nginx
+      - image: nginx:1.23.2
         imagePullPolicy: IfNotPresent
         name: nginx
         resources:
