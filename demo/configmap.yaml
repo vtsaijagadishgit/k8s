@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: index-html-configmap
+  #namespace: ic-ws-demo
+data:
+  index.html: |
+     <!DOCTYPE html>
+     <html>
+     <head>
+     <title>Welcome to Ingenious Connect Season 9!</title>
+     <style>
+     html { color-scheme: light dark; }
+     body { width: 35em; margin: 0 auto;
+     font-family: Tahoma, Verdana, Arial, sans-serif; }
+     </style>
+     </head>
+     <body>
+     <h1>Welcome to Ingenious Connect Season 9!</h1>
+     <p>If you see this page, your application and service are successfully installed and
+     working. </p>
+     <p><em>Thank you for attending Kubernetes Workshop.</em></p>
+     </body>
+     </html>
