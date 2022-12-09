@@ -4,7 +4,7 @@ metadata:
   labels:
     app: nginx
   name: nginx
-  #namespace: ic-ws-demo
+  #namespace: ic-ws-demo-v1
 spec:
   replicas: 2
   selector:
@@ -42,7 +42,7 @@ metadata:
   labels:
     app: nginx
   name: nginx
-  #namespace: ic-ws-demo
+  #namespace: ic-ws-demo-v1
   annotations:
 spec:
   ports:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: index-html-configmap
-  #namespace: ic-ws-demo
+  #namespace: ic-ws-demo-v1
 data:
   index.html: |
      <!DOCTYPE html>
@@ -89,7 +89,7 @@ metadata:
     kubernetes.io/ingress.class: haproxy-haproxy
     haproxy.org/path-rewrite: "/"
   name: nginx-ingress
-  #namespace: ic-ws-demo
+  #namespace: ic-ws-demo-v1
 spec:
   rules:
 #  - host: app.local
@@ -102,3 +102,17 @@ spec:
             name: nginx
             port:
               number: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-cpu-hpa
+  #namespace: ic-ws-demo-v1
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
