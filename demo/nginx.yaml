@@ -16,7 +16,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: nginx
+      - image: nginx:1.23.2
         imagePullPolicy: IfNotPresent
         name: nginx
         resources:
@@ -26,6 +26,14 @@ spec:
          limits:
            memory: "128Mi"
            cpu: "300m"
+        volumeMounts:
+            - name: nginx-index-file
+              mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: index-html-configmap
+           
       securityContext: {}
 ---
 apiVersion: v1
@@ -46,3 +54,65 @@ spec:
     app: nginx
   sessionAffinity: None
   type: NodePort
+  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: index-html-configmap
+  namespace: ic-ws-057
+data:
+  index.html: |
+     <!DOCTYPE html>
+     <html>
+     <head>
+     <title>Welcome to Ingenious Connect Season 9!</title>
+     <style>
+     html { color-scheme: light dark; }
+     body { width: 35em; margin: 0 auto;
+     font-family: Tahoma, Verdana, Arial, sans-serif; }
+     </style>
+     </head>
+     <body>
+     <h1>Output from namespace ic-ws-demo-v1!</h1>
+     <p>If you see this page, your application and service are successfully installed and
+     working. </p>
+     <p><em>Thank you for attending Kubernetes Workshop.</em></p>
+     </body>
+     </html>
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: haproxy-haproxy
+    haproxy.org/path-rewrite: "/"
+  name: nginx-ingress
+  namespace: ic-ws-057
+spec:
+  rules:
+  - host: app.local
+   - http:
+      paths:
+      - path: /ic-ws-057
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-cpu-hpa
+  namespace: ic-ws-057
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
